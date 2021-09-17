@@ -39,4 +39,4 @@ auto.ods
 Finance.xls
 Pipfile
 finance/static/img/*
-desc/settings/base.py*
+#desc/settings/base.py*

@@ -10,13 +10,13 @@ import datetime
 
 # Называем поля по своему TODO добавить проверку clean
 class FinanceCreateForm(ModelForm):
-    # image = forms.ImageField()
-    # file = forms.FileField()
+
+
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название'}))
     timestamp = forms.DateField(widget=forms.DateInput(
         attrs={'class': 'datepicker', 'placeholder': 'Дата покупки','autocomplete':'off'}))
-    # category = forms.CharField(widget=forms.CharField(attrs={'class':'form-control','placeholder':'Дата покупки'}))
-    # kolvo = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Количество'}))
+
+
     total = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Итого','autocomplete':'off'}))
 
@@ -66,24 +66,6 @@ class FinanceFilterSingleDateForm(forms.Form):
             raise ValidationError(_('Ошибка в дате - новая дата не может быть позже 4 недель'))
 
         return data
-
-    # TODO проверить что данные отправляются и редиректить сразу на views с датой
-    # def clean_single_date(self):
-    #     # singleyear = self.cleaned_data['single_date'].year
-    #     # singlemonth = self.cleaned_data['single_date'].month
-    #     # singleday = self.cleaned_data['single_date'].date
-    #
-    #     # проверка того, что дата не выходит за нижнюю границу (не в прошлом)
-    #     # if data < datetime.date.today():
-    #     #     raise ValidationError(_('Invalid date - renewal in past'))
-    #
-    #     # проверка того, что дата не выходит за верхнюю границу (+4 недели)
-    #     if singleyear > datetime.date.today() + datetime.timedelta(weeks=4):
-    #         raise ValidationError(_('Ошибка в дате - новая дата не может быть позже 4 недель'))
-    #
-    #     # помните, что всегда надо возвращать очищенные данные
-    #
-    #     return singleyear
 
 class SearchForm(forms.Form):
     # Добавим для осуществления поиска по формам

@@ -13,7 +13,6 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
 import datetime
-# from datetime import date
 
 
 from rest_framework.views import APIView
@@ -27,9 +26,6 @@ from desc.apps.finance.models import FinanceExpend, FinanceProfit
 from desc.apps.finance.serializers import (SingleSerializers, ExpensesSerializers)
 
 from .mixins import AjaxFormMixin
-
-# Imaginary function to handle an uploaded file.
-# from somewhere import handle_uploaded_file
 
 
 class FinanceCreateView(AjaxFormMixin, CreateView):
@@ -64,39 +60,6 @@ class FinanceDeleteView(DeleteView):
    #    self.object = self.get_object()
 
     success_url = '/finance/'
-# def finance_createview(request):
-#     form = FinanceCreateForm()
-#
-#     if request.method == "POST":
-#         print("post data")
-#
-#         form = FinanceCreateForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             # instance = FinanceExpend(file_field=request.FILES['files'])
-#             # instance.save()
-#             # handle_uploaded_file(request.FILES['file'])
-#             # obj = FinanceExpend.objects.create(
-#             #     name=form.cleaned_data.get('name'),
-#             #     category=form.cleaned_data.get('category'),
-#             #     timestamp=form.cleaned_data.get('timestamp'),
-#             #     kolvo=form.cleaned_data.get('kolvo'),
-#             #     total=form.cleaned_data.get('total'),
-#             #     file=request.FILES['files']
-#             #
-#             # )
-#             # return reverse('finance-detail', kwargs={'id': id})
-#             return HttpResponseRedirect('/finance/')
-#
-#         if form.errors:
-#             print(form.errors)
-#
-#         # name = request.POST.get('name')
-#         # name = request.POST.get('name')
-#         # name = request.POST.get('name')
-#     template_name = 'finance/form.html'
-#     context = {"form": form}
-#     return render(request, template_name, context)
 
 
 def handle_uploaded_file(f):
@@ -104,12 +67,6 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-
-# def home(request):
-#     context = {
-#         "html_var": "context variable"
-#     }
-#     return render(request, "base.html", context)
 
 User = get_user_model()
 
@@ -229,12 +186,6 @@ def finance_detailview(request, id):
 
 class FinanceStatisticView(View):
 
-    # model = FinanceExpend
-    # template_name = 'statistic.html'
-
-    # def get(self, request, *args):
-    #     return FinanceExpend.objects.filter(timestamp__range=["2019-07-26", "2019-08-05"]).aggregate(Sum('total'))
-
 
     def get(self, request, *args, **kwargs):
         # данные за период отпуска
@@ -254,21 +205,15 @@ def finance_listview(request):
     get_language()
 
     today = datetime.date.today()
-    # Этот месяц
-    # nowMonth = date(today, 'F')
-    # nowMonth = date(today, 'F')
+
     # Месяц числом
     numMonth = date(today, 'm')
     # Этот год числом
     now_year = date(today, 'Y')
 
-    # print(numMonth)
-    # TODO Переписать используя наработки. Возможно используя API chart
-
     # расходы на автомобили (все) за всё время:
     all_auto = FinanceExpend.objects.filter(category='auto').aggregate(Sum('total'))
-    patriot_all = FinanceExpend.objects.filter(auto__name='UAZ PATRIOT').aggregate(Sum('total'))
-    vesta_all = FinanceExpend.objects.filter(auto__name='Lada Vesta').aggregate(Sum('total'))
+
     # Этот год
     # последние 30 записей за этот год
     year = FinanceExpend.objects.filter(timestamp__year=now_year)
@@ -317,11 +262,11 @@ def finance_listview(request):
     sum19 = year19.aggregate(Sum('total'))
     sum20 = year20.aggregate(Sum('total'))
     sum21 = year21.aggregate(Sum('total'))
-    # print(sum16)
+
     all_sum = all.aggregate(Sum('total'))
     # средний чек за весь период
     avg = FinanceExpend.objects.aggregate(total_avg=Avg('total'))
-    # queryset = FinanceExpend.objects.all().order_by('-updated')
+
     context = {
         "object_list": queryset,
         "avg": avg,
@@ -349,8 +294,6 @@ def finance_listview(request):
         'month11_expend': month11_expend,
         'month12_expend': month12_expend,
         'all_auto_expend': all_auto,
-        'patriot_all': patriot_all,
-        'vesta_all': vesta_all
     }
     template_name = 'finance/finance_list.html'
     return render(request, template_name, context)
@@ -367,7 +310,6 @@ def finance_listview_auto(request, *args, **kwargs):
     # средний чек за весь период
     avg = FinanceExpend.objects.aggregate(total_avg=Avg('total'))
 
-    # queryset = FinanceExpend.objects.all().order_by('-updated')
     context = {
         "object_list": queryset,
         "avg": avg,
@@ -378,43 +320,31 @@ def finance_listview_auto(request, *args, **kwargs):
 
 
 def all_finance_listview(request, *args, **kwargs):
-    # скопировать и зафильтровать на пример так:
-    # query = FinanceExpend.objects.filter(timestamp=date(2018,12,31))
+
     #  используем пагинацию
     template_name = 'finance/finance_list_all.html'
-    # year = FinanceExpend.objects.filter(timestamp__year=2017)
     queryset = FinanceExpend.objects.all().order_by('-timestamp')
-    # print(queryset)
+
     paginator = Paginator(queryset, 20)
 
     page = request.GET.get('page')
     try:
         obj = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         obj = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         obj = paginator.page(paginator.num_pages)
 
     return render(request, template_name, {'object_list': obj})
 
 
 def finance_listview_date(request, year, month, date, *args, **kwargs):
-    # TODO доработать с формой
-    # скопировать и зафильтровать на пример так:
-    # query = FinanceExpend.objects.filter(timestamp=date(2018,12,31))
-    #  используем пагинацию
+
     template_name = 'finance/finance_list_all.html'
-    # year = FinanceExpend.objects.filter(timestamp__year=2017)
-    # Год
-    # req_year = year
-    # newString = "%year - ем %s" % year
-    # timeformat = year + '-' + month + '-' + date
+
     dt =  datetime.date(year,month,date)
     queryset = FinanceExpend.objects.filter(timestamp=dt)
-    # queryset = FinanceExpend.objects.all().order_by('-timestamp')
-    # print(queryset)
+
     if request.method == 'POST':
         form = FinanceFilterSingleDateForm(request.POST)
 
@@ -435,72 +365,46 @@ def finance_listview_date(request, year, month, date, *args, **kwargs):
     try:
         obj = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
+
         obj = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
+
         obj = paginator.page(paginator.num_pages)
 
     return render(request, template_name, {'form': form, 'object_list': obj})
 
 
 def finance_listview_date_form(request, *args, **kwargs):
-    # скопировать и зафильтровать на пример так:
-    # query = FinanceExpend.objects.filter(timestamp=date(2018,12,31))
-    #  используем пагинацию
+
     template_name = 'finance/finance_listview_date_form.html'
 
     if request.method == 'POST':
       form = FinanceFilterSingleDateForm(request.POST)
 
       if form.is_valid():
-        # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+
          reqyear = form.cleaned_data['single_date'].year
          reqmonth = form.cleaned_data['single_date'].month
          reqdate = form.cleaned_data['single_date'].day
-        #
-         # string = reqyear + '/' + reqmonth  + '/' + '/'+ reqdate +'/'
 
          url = '/finance/date/%d/%d/%d/' % (reqyear, reqmonth, reqdate)
 
-         # redirect to a new URL
-         return HttpResponseRedirect(url)
-      # else:
-        # Do something in case if form is not valid
-        # raise form.ValidationError("You have forgotten about Fred!")
-        # raise Http404
 
-        # form = FinanceFilterSingleDateForm(request.POST)
+         return HttpResponseRedirect(url)
+
     else:
         prop_date = datetime.date.today()
         form = FinanceFilterSingleDateForm(initial={'single_date': prop_date,})
-    #   'single_date'  2019-03-21
+
     return render(request, template_name, {'form': form})
 
-
-#class RestaurantListView(ListView):
-    #template_name = 'restaurants/restaurants_list.html'
-
-    # def get_queryset(self):
-    #     slug = self.kwargs.get("slug")
-    #     if slug:
-    #         queryset = RestaurantLocation.objects.filter(
-    #             Q(category__iexact=slug) |
-    #             Q(category__icontains=slug))
-    #     else:
-    #         queryset = RestaurantLocation.objects.all()
-        #return render()
 from django.conf import settings
 
 class ProfitListView(ListView):
     model = FinanceProfit
     template_name = 'profit/profit_list.html'
     paginate_by = 20
-    # Сделать расходы за текущий месяц
-    # и добавить переменную
-    # aggr_today - расходы за этот месяц
-    # вывести доходы за текущий месяц переменная profit_month
-    # queryset = year.order_by('-timestamp')[:30]
+
 
     def get_context_data(self, **kwargs):
         import datetime
@@ -523,10 +427,6 @@ class ProfitListView(ListView):
         }
         return context
 
-     # def get_queryset(self):
-     #     year = FinanceProfit.objects.filter(timestamp__year=2019).order_by('-timestamp')[:30]
-     #     queryset = year.order_by('-timestamp')[:30]
-     #     return queryset
 
 def post_search(request):
     form = SearchForm()

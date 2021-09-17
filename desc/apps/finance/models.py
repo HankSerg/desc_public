@@ -34,7 +34,6 @@ CATEGORY_CHOICES = (
 )
 
 
-# from .utils import unique_slug_generator
 class FinanceExpend(models.Model):
     """ Модель для записи расходов """
     name = models.CharField(max_length=120)  # tovar
@@ -94,12 +93,6 @@ class FinanceProfit(models.Model):
     def __str__(self):
         return str(self.name)
 
-    # далее записи для будущих расходов
-    # 1 название
-    # сумма будущих расходов
-    # крайняя дата
-
-
 # Задаём значения для SELECT
 PLAN_CHOICES = (
     ('auto', 'Авто'),
@@ -143,31 +136,15 @@ class FinancePlane(models.Model):
 
 class HomePage(Page):
     body = RichTextField(blank=True)
-    # date = models.DateField("Post date")
+
     template = 'home_page.html'
 
-    # Editor panels configuration
     content_panels = Page.content_panels + [
-        # FieldPanel('date'),
+
         FieldPanel('body', classname="full")
     ]
 
-    # Search index configuration
-
     search_fields = Page.search_fields + [
         index.SearchField('body'),
-        # index.FilterField('date'),
-    ]
 
-# @register_snippet
-# class Advert(models.Model):
-#     url = models.URLField(null=True, blank=True)
-#     text = models.CharField(max_length=255)
-#
-#     panels = [
-#         FieldPanel('url'),
-#         FieldPanel('text'),
-#     ]
-#
-#     def __str__(self):
-#         return self.text
+    ]

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+
+<script>
+{% block jquery %}
+
+  {% endblock jquery%}
+</script>
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-12" url-endpoint='{% url "api-data" %}'></div>
+</div>
+ <h1>{{ self.title }}</h1>
+{{ page.body|richtext }}
+
+
+<canvas id="myChart" width="400" height="400"></canvas>
+
+
+{% endblock content %}

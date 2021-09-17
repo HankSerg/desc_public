@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+{% block content %}
+<main role="main">
+
+<div class="row">
+
+<div class="col-md-6 col-xs-12">
+
+
+<h1>Finance</h1>
+    <p>Расходы за {% now "F" %}: {{ sumTodayMonth.total__sum|floatformat }}</p>
+<hr>
+
+    <p>Сумма расходов за {% now "Y" %} год: <b>{{ total.total__sum|floatformat }}</b> </p>
+    <p>Расходы за 2021 год: {{ sum21.total__sum|floatformat }}</p>
+    <p>Расходы за 2020 год: {{ sum20.total__sum|floatformat }}</p>
+    <p>Расходы за 2019 год: {{ sum19.total__sum|floatformat }}</p>
+    <p>Расходы за 2018 год: {{ sum18.total__sum|floatformat }}</p>
+    <p>Расходы за 2017 год: {{ sum17.total__sum|floatformat }}</p>
+    <p>Расходы за 2016 год: {{ sum16.total__sum|floatformat }}</p>
+    <p>Сумма расходов за всё время: {{ all_sum.total__sum|floatformat }}</p>
+
+    <p>
+     Средний чек покупки за год: {{ avg.total_avg|floatformat }}
+    </p>
+    <p>
+     Максимальный чек покупки за год: {{ maximum.total__max|floatformat }}
+    </p>
+    <p>Все расходы по категории Авто: {{ all_auto_expend.total__sum|floatformat }}</p>
+    <p>Отдельно по автомобилям:</p>
+    <p>Все расходы на Лада Веста: {{ vesta_all.total__sum|floatformat }}</p>
+    <p>Все расходы на УАЗ Патриот: {{ patriot_all.total__sum|floatformat }}</p>
+    </div>
+
+
+    </div>
+
+
+<h2>Последние записи</h2>
+<ul>
+    {% for obj in object_list %}
+        <li>
+            <a href=' {% url "finance-detail" pk=obj.pk %}  '>
+            {{ obj.timestamp|date:"d.m.Y" }} |
+            {{ obj.name }} |
+            {{ obj.category }} |
+            {{ obj.total }} |
+            </a>
+             <a href=' {% url "finance-update" pk=obj.pk %}  '><img class="edit-icon" src="/static/img/edit.svg"></a>
+        </li>
+    {% endfor %}
+</ul>
+
+<p>Январь: {{ month1_expend.total__sum|floatformat }}</p>
+<p>Февраль: {{ month2_expend.total__sum|floatformat }}</p>
+<p>Март: {{ month3_expend.total__sum|floatformat }}</p>
+<p>Апрель: {{ month4_expend.total__sum|floatformat }}</p>
+<p>Май: {{ month5_expend.total__sum|floatformat }}</p>
+<p>Июнь: {{ month6_expend.total__sum|floatformat }}</p>
+<p>Июль: {{ month7_expend.total__sum|floatformat }}</p>
+<p>Август: {{ month8_expend.total__sum|floatformat }}</p>
+<p>Сентябрь: {{ month9_expend.total__sum|floatformat }}</p>
+<p>Октябрь: {{ month10_expend.total__sum|floatformat }}</p>
+<p>Ноябрь: {{ month11_expend.total__sum|floatformat }}</p>
+<p>Декабрь: {{ month12_expend.total__sum|floatformat }}</p>
+
+
+</main>
+
+
+{% endblock content %}

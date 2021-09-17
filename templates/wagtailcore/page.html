@@ -1,0 +1,156 @@
+{# % extends "blog/base.html" % #}
+{% extends "base.html" %}
+{% load static wagtailuserbar %}
+{% load wagtailcore_tags %}
+{% block body_class %} template-homepage {% endblock %}
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+
+<script>
+{% block jquery %}
+// добавить finance profit
+var endpoint = '/api/chart/data/';
+var defaultData = [];
+var lastData = [];
+var labels = [];
+
+$.ajax({
+  method: "GET",
+  url: endpoint,
+  success: function(data){
+      labels = data.labels;
+      defaultData = data.default;
+      lastData = data.last_year;
+      setChart();
+
+    console.log(data)
+
+  },
+  error: function(error_data){
+    console.log("error");
+    console.log(error_data)
+  }
+});
+
+function setChart() {
+     var ctx = document.getElementById("myChart").getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Сумма расходов за месяц',
+                data: defaultData,
+                 backgroundColor: [
+                'rgba(255, 99, 132, 0.1)',
+
+            ],
+                // fill: false,
+                borderColor: [
+                'rgba(255,99,132,1)',
+            ],
+                borderWidth: 1
+            }, {
+                label: 'Расходы за прошлый год',
+                data: lastData,
+                // fill: false,
+                backgroundColor: [
+                'rgba(130, 133, 255, 0.1)',
+            ],
+            }
+
+
+            ]
+        },
+          options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 10000,
+                        suggestedMax: 45000,
+                        stepSize: 20000
+                        // beginAtZero:true
+                    }
+                }]
+            }
+    }
+      })
+}
+
+// var ctx = document.getElementById("myChart").getContext('2d');
+// var myChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//         labels: labels,
+//         datasets: [{
+//             label: '# of Votes',
+//             data: defaultData,
+//             backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,1)',
+//                 'rgba(54, 162, 235, 1)',
+//                 'rgba(255, 206, 86, 1)',
+//                 'rgba(75, 192, 192, 1)',
+//                 'rgba(153, 102, 255, 1)',
+//                 'rgba(255, 159, 64, 1)'
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
+
+  {% endblock jquery%}
+</script>
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-12" url-endpoint='{% url "api-data" %}'></div>
+</div>
+<h1>{{ self.title }}</h1>
+
+
+{{ page.body|richtext }}
+
+
+<ol>
+  <li>Заготовить дров</li>
+  <li>Достроить сарай</li>
+  <li>Доштукатурить 2 этаж</li>
+  <li>Получить все документы на дом</li>
+</ol>
+
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<h3>{{ block.super }}</h3>
+ip {{ ip }}
+<p>Скоро здесь будет <code>{% verbatim %} {{ html_var }} {% endverbatim %} </code></p>
+{% if num is not None %}
+<p>Рандомное число {{num}}</p>
+{% endif %}
+
+{% for some_item in some_list %}
+  {% if some_item|divisibleby:"2" %}
+    Even number
+  {% endif %}
+
+{{ some_item }} <br>
+
+{% endfor %}
+
+{% endblock content %}

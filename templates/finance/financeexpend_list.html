@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+{% block content %}
+
+<h1>Finance</h1>
+
+<h2>Все записи</h2>
+<ul>
+    {% for obj in object_list %}
+        <li>
+            {{ obj.timestamp|date:"d.m.Y" }}
+            {{ obj.name }}
+            {{ obj.category }}
+            {{ obj.total }}
+        </li>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock content %}

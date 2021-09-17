@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load wagtailcore_tags %}
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+
+<script>
+{% block jquery %}
+
+  {% endblock jquery%}
+</script>
+
+{% block content %}
+
+    <h1>Здесь будет статистика</h1>
+
+<h2>Отпуск 2019</h2>
+    <p>26 июля выехали, 4 августа приехали</p>
+
+    <p>Расходы : <strong>{{ sum.total__sum }} руб.</strong></p>
+
+
+
+{{ page.body|richtext }}
+
+
+
+
+{% endblock content %}

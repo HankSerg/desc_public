@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ block.super }} - страница {{ object_list.number }}{% endblock head_title %}
+
+{% block meta %}
+{% if object_list.has_previous %}
+<link rel="prev" href="/finance/all/?page={{ object_list.previous_page_number }}" />
+{% endif %}
+{% if object_list.has_next %}
+<link rel="next" href="/finance/all/?page={{ object_list.next_page_number }}" />
+{% endif %}
+{% endblock meta%}
+
+
+{% block content %}
+
+<h2>Список расходов</h2>
+
+    <div class="row">
+        <a href="{% url "finance-date" %}">Выбор данных по календарю</a>
+    </div>
+
+<ul>
+    {% for obj in object_list %}
+        <li>
+            {{ obj.timestamp|date:"d.m.Y" }}
+            {{ obj.name }}
+            {{ obj.category }}
+            {{ obj.total }}
+            <a href=' {% url "finance-update" pk=obj.pk %}  '><img class="edit-icon" src="/static/img/edit.svg"></a>
+        </li>
+    {% endfor %}
+</ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?page={{ object_list.previous_page_number }}">Сюда</a>
+        {% endif %}
+
+        <span class="current">
+            Лист {{ object_list.number }} из {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}">Туда</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock content %}

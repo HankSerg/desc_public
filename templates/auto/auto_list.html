@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ block.super }}Доходы{% endblock head_title %}
+
+{% block content %}
+
+{% for obj in auto_list %}
+ <div>
+ <h2><a href=""> {{ obj.name }}</a></h2>
+     <p>{{ obj.id }}</p>
+     <p>{{ obj.text }}</p>
+
+      <p>{{ obj.updated_date }}</p>
+
+  </div>
+{% endfor %}
+
+
+
+{% endblock %}

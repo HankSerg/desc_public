@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block head_title %}Добавляем расходы | {{ block.super }}{% endblock head_title %}
+{% block content %}
+
+<div class="col-md-6">
+    <h2>Запись расходов</h2>
+
+    {% if form.errors.non_field_errors %}
+        {{ form.errors.non_field_errors }}
+    {% endif %}
+    <div id="result"></div>
+    <form class="my-ajax-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+          {{field}}
+        </div>
+        {% endfor %}
+        <div class="row">
+               <div class="col-md-5">
+                 <input class='btn btn-success' name="save" type="submit" value="Записать" />
+               </div>
+
+                <div class="col-md-5">
+                    <input class='btn btn-danger' type="submit" value="Удалить запись" />
+                </div>
+        </div>
+
+
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block head_title %}{{ block.super }}{% endblock head_title %}
+{% block content %}
+
+
+<h2>Покупка: {{ object.name }}</h2>
+
+{{ object.timestamp}} <br>
+
+
+ <span class="detail-total">Цена: {{object.total}}</span> <br>
+
+    {% if "products" in object.category %}
+<img class="detail-icon" title="продукты" src="/static/img/depositphotos_5140629-stock-photo-fresh-vegetables-fruits-and-other.jpg" alt="продукты" >
+    {% endif %}
+{% if "auto" in object.category  %}
+<img class="detail-icon" src="/static/img/pumping-gas-need-premium-0001-720x720.jpg"/>
+{% endif %}
+
+{% if "health" in object.category %}
+<img class="detail-icon" src="/static/img/health.png"/>
+{% endif %}
+{% if object.files.url in object.files.url %}
+    <p>Файлы во вложении:</p>
+   <a href="{{ object.files.url }}">{{ object.files.name}} {{ object.files.size|filesizeformat}} </a>
+    {% endif %}
+
+<a href=' {% url "finance-update" pk=object.pk %}  '><img class="edit-icon" title="Редактировать" src="/static/img/edit.svg"></a>
+
+{% endblock content %}

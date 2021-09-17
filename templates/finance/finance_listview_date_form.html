@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ block.super }} - страница {{ object_list.number }}{% endblock head_title %}
+
+{% block meta %}
+{% if object_list.has_previous %}
+<link rel="prev" href="/finance/all/?page={{ object_list.previous_page_number }}" />
+{% endif %}
+{% if object_list.has_next %}
+<link rel="next" href="/finance/all/?page={{ object_list.next_page_number }}" />
+{% endif %}
+{% endblock meta%}
+
+
+{% block content %}
+
+<h2>Список расходов</h2>
+
+    <div class="row">
+    <form action="" method="post">
+         {% csrf_token %}
+{#  <div class="form-group">#}
+{#    <label for="FilterSingleDate">Выбираем дату</label>#}
+{#    <input type="date" class="form-control" id="FilterSingleDate" aria-describedby="dateHelp" placeholder="Введите дату">#}
+{#    <small id="dateHelp" class="form-text text-muted">Выбираем дату</small>#}
+{#  </div>#}
+{{ form }}
+  <button type="submit" class="btn btn-primary">Выбрать</button>
+</form>
+    </div>
+
+<ul>
+
+</ul>
+
+
+
+{% endblock content %}

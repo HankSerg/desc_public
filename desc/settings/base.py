@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'django.contrib.postgres',
     'rest_framework',
     'rest_framework.authtoken',
-    'desc.apps.finance',
-    'desc.apps.auto',
+    'corsheaders',
+    'modelcluster',
+    'taggit',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -57,10 +59,10 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-    'modelcluster',
-    'taggit',
+    'desc.apps.finance',
+    'desc.apps.auto',
     # 'debug_toolbar',
-    'django.contrib.postgres',
+
 ]
 
 MIDDLEWARE = [
@@ -190,8 +192,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     # 'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
     'DEFAULT_PAGINATION_CLASS':
@@ -207,6 +209,17 @@ REST_FRAMEWORK = {
     # ),
     # 'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
+
+DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',)
+}
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # CORS_ORIGIN_WHITELIST = (
 #     'https://localhost:8030'
